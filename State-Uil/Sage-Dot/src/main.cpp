@@ -2,7 +2,7 @@
 /*                                                                            */
 /*    Module: main.cpp                                                        */
 /*    Author: 2344A                                                           */
-/*    Descption: Skills Auton                                                 */
+/*    Descption: Sage-Dot                                                     */
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
