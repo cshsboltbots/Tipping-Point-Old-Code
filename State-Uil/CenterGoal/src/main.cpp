@@ -2,7 +2,7 @@
 /*                                                                            */
 /*    Module: main.cpp                                                        */
 /*    Author: 2344A                                                           */
-/*    Descption: RampRC                                                       */
+/*    Descption: CenterGoal                                                   */
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
@@ -346,8 +346,36 @@ void autonomous(void) {
   // Start of Auton
   task PID(drivePID);
 
-  // Run Ring
+  // Ungrab
+  Grabber.set(false);
+
+  // Go Forwards 80 in.
+  F(80);
+  wait(1,sec);
+
+  // Grab Goal
+  RunGoal(1);
+
+  // Go Backwards 45 in.
+  B(45);
+  wait(1,sec);
+
+  // Turn Left 63 deg.
+  L(63);
+
+  // Go Backwards 50 in.
+  B(50);
+  wait(.5,sec);
+
+  // Spin Red
+  Red.spinFor(.75,rev);
+
+  // Go Forwards 40 in.
+  F(40);
+
+  // Run Ring Lift
   RunRing(15,-1,100);
+
 }
 
 /*---------------------------------------------------------------------------*/
