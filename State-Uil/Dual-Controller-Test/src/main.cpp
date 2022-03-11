@@ -611,7 +611,7 @@ void usercontrol(void) {
   // Disables RampBalance at start of User Control
   enableRampBalance = false;
 
-  // Starts the threads for User Control
+  // Starts the threads for User Control Period
   task BaseControl(Driver);
   task ButtonControl1(RingButtons);
   task ButtonControl2(ArmButtons);
