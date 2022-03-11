@@ -512,7 +512,7 @@ void autonomous(void) {
 /*  You must modify the code to add your own robot specific commands here.   */
 /*---------------------------------------------------------------------------*/
 
-// Controller 1 Driver Control Thread
+// Driver Control Thread
 int Driver() {
   while (true) {
     if (Controller1.ButtonDown.pressing() == 1 &&
@@ -523,7 +523,15 @@ int Driver() {
                Controller1.ButtonLeft.pressing() == 1) {
       Left.stop(coast);
       Right.stop(coast);
-    } else {
+    }     if (Controller2.ButtonDown.pressing() == 1 &&
+        Controller2.ButtonRight.pressing() == 1) {
+      Left.stop(hold);
+      Right.stop(hold);
+    } else if (Controller2.ButtonDown.pressing() == 1 &&
+               Controller2.ButtonLeft.pressing() == 1) {
+      Left.stop(coast);
+      Right.stop(coast);
+    }else {
       Left.spin(directionType::fwd,
                 (Controller1.Axis3.value() + Controller1.Axis1.value() / 2),
                 velocityUnits::pct);
@@ -535,24 +543,7 @@ int Driver() {
   }
 }
 
-// Controller 2 Driver Control Thread
-int Driver2() {
-  while (true) {
-    if (Controller2.ButtonDown.pressing() == 1 &&
-        Controller2.ButtonRight.pressing() == 1) {
-      Left.stop(hold);
-      Right.stop(hold);
-    } else if (Controller2.ButtonDown.pressing() == 1 &&
-               Controller2.ButtonLeft.pressing() == 1) {
-      Left.stop(coast);
-      Right.stop(coast);
-    }
-    wait(20, msec);
-  }
-}
-
-
-// Controller 1 Ring Control Thread
+// Ring Control Thread
 int RingButtons() {
   while (true) {
     if (Controller1.ButtonL1.pressing() == 1) {
@@ -566,7 +557,7 @@ int RingButtons() {
   }
 }
 
-// Controller 1 Arm Control Thread
+// Arm Control Thread
 int ArmButtons() {
   while (true) {
     if (Controller1.ButtonR1.pressing() == 1) {
@@ -580,7 +571,7 @@ int ArmButtons() {
   }
 }
 
-// Controller 1 Grabber Control Thread
+// Grabber Control Thread
 int GrabberButtons() {
   while (true) {
     if (Controller1.ButtonX.pressing() == 1) {
@@ -592,13 +583,18 @@ int GrabberButtons() {
   }
 }
 
-// Controller 1 Red Control Thread
+// Red Control Thread
 int RedButtons() {
   while (true) {
     if (Controller1.ButtonY.pressing() == 1) {
-      Red.spin(forward, 75, pct);
+      Red.spin(forward, 100, pct);
     } else if (Controller1.ButtonB.pressing() == 1) {
-      Red.spin(reverse, 75, pct);
+      Red.spin(reverse, 100, pct);
+    } 
+    else if (Controller2.ButtonR1.pressing() == 1) {
+      Red.spin(forward, 20, pct);
+    } else if (Controller2.ButtonR2.pressing() == 1) {
+      Red.spin(reverse, 20, pct);
     } else {
       Red.stop(hold);
     }
@@ -616,12 +612,11 @@ void usercontrol(void) {
   enableRampBalance = false;
 
   // Starts the threads for User Control
-  task C1BaseControl(Driver);
-  task C1ButtonControl1(RingButtons);
-  task C1ButtonControl2(ArmButtons);
-  task C1ButtonControl3(GrabberButtons);
-  task C1ButtonControl4(RedButtons);
-  task C2Controller1Control()
+  task BaseControl(Driver);
+  task ButtonControl1(RingButtons);
+  task ButtonControl2(ArmButtons);
+  task ButtonControl3(GrabberButtons);
+  task ButtonControl4(RedButtons);
 }
 
 // Entry Point
