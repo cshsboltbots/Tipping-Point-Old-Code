@@ -2,23 +2,24 @@
 /*                                                                            */
 /*    Module: main.cpp                                                        */
 /*    Author: 2344A                                                           */
-/*    Descption: Skills Auton                                                 */
+/*    Descption: Dual-Controller-Test                                         */
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
 // ---- START VEXCODE CONFIGURED DEVICES ----
 // Robot Configuration:
 // [Name]               [Type]        [Port(s)]
-// Controller1          controller
-// Left                 motor_group   1, 4
-// Right                motor_group   2, 3
-// Right_Sensor         rotation      7
-// Left_Sensor          rotation      8
-// Ring                 motor         5
-// Grabber              digital_out   A
-// Arm                  motor_group   9, 10
-// Inertial             inertial      6
-// Red                  motor         11
+// Controller1          controller                    
+// Left                 motor_group   1, 4            
+// Right                motor_group   2, 3            
+// Right_Sensor         rotation      7               
+// Left_Sensor          rotation      8               
+// Ring                 motor         5               
+// Grabber              digital_out   A               
+// Arm                  motor_group   9, 10           
+// Inertial             inertial      6               
+// Red                  motor         11              
+// Controller2          controller                    
 // ---- END VEXCODE CONFIGURED DEVICES ----
 
 // Includes the vex library
@@ -511,7 +512,7 @@ void autonomous(void) {
 /*  You must modify the code to add your own robot specific commands here.   */
 /*---------------------------------------------------------------------------*/
 
-// Driver Control Thread
+// Controller 1 Driver Control Thread
 int Driver() {
   while (true) {
     if (Controller1.ButtonDown.pressing() == 1 &&
@@ -534,7 +535,24 @@ int Driver() {
   }
 }
 
-// Ring Control Thread
+// Controller 2 Driver Control Thread
+int Driver2() {
+  while (true) {
+    if (Controller2.ButtonDown.pressing() == 1 &&
+        Controller2.ButtonRight.pressing() == 1) {
+      Left.stop(hold);
+      Right.stop(hold);
+    } else if (Controller2.ButtonDown.pressing() == 1 &&
+               Controller2.ButtonLeft.pressing() == 1) {
+      Left.stop(coast);
+      Right.stop(coast);
+    }
+    wait(20, msec);
+  }
+}
+
+
+// Controller 1 Ring Control Thread
 int RingButtons() {
   while (true) {
     if (Controller1.ButtonL1.pressing() == 1) {
@@ -548,7 +566,7 @@ int RingButtons() {
   }
 }
 
-// Arm Control Thread
+// Controller 1 Arm Control Thread
 int ArmButtons() {
   while (true) {
     if (Controller1.ButtonR1.pressing() == 1) {
@@ -562,7 +580,7 @@ int ArmButtons() {
   }
 }
 
-// Ring Control Thread
+// Controller 1 Grabber Control Thread
 int GrabberButtons() {
   while (true) {
     if (Controller1.ButtonX.pressing() == 1) {
@@ -574,7 +592,7 @@ int GrabberButtons() {
   }
 }
 
-// Red Control Thread
+// Controller 1 Red Control Thread
 int RedButtons() {
   while (true) {
     if (Controller1.ButtonY.pressing() == 1) {
@@ -598,11 +616,12 @@ void usercontrol(void) {
   enableRampBalance = false;
 
   // Starts the threads for User Control
-  task BaseControl(Driver);
-  task ButtonControl1(RingButtons);
-  task ButtonControl2(ArmButtons);
-  task ButtonControl3(GrabberButtons);
-  task ButtonControl4(RedButtons);
+  task C1BaseControl(Driver);
+  task C1ButtonControl1(RingButtons);
+  task C1ButtonControl2(ArmButtons);
+  task C1ButtonControl3(GrabberButtons);
+  task C1ButtonControl4(RedButtons);
+  task C2Controller1Control()
 }
 
 // Entry Point

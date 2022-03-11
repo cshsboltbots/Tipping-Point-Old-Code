@@ -24,6 +24,7 @@ motor ArmMotorB = motor(PORT10, ratio18_1, false);
 motor_group Arm = motor_group(ArmMotorA, ArmMotorB);
 inertial Inertial = inertial(PORT6);
 motor Red = motor(PORT11, ratio36_1, true);
+controller Controller2 = controller(partner);
 
 // VEXcode generated functions
 // define variable for remote controller enable/disable
