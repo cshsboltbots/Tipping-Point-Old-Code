@@ -2,23 +2,24 @@
 /*                                                                            */
 /*    Module: main.cpp                                                        */
 /*    Author: 2344A                                                           */
-/*    Descption: Sage-Dot                                                     */
+/*    Descption: Skills                                                       */
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
 // ---- START VEXCODE CONFIGURED DEVICES ----
 // Robot Configuration:
 // [Name]               [Type]        [Port(s)]
-// Controller1          controller
-// Left                 motor_group   1, 4
-// Right                motor_group   2, 3
-// Right_Sensor         rotation      7
-// Left_Sensor          rotation      8
-// Ring                 motor         5
-// Grabber              digital_out   A
-// Arm                  motor_group   9, 10
-// Inertial             inertial      6
-// Red                  motor         11
+// Controller1          controller                    
+// Left                 motor_group   1, 4            
+// Right                motor_group   2, 3            
+// Right_Sensor         rotation      7               
+// Left_Sensor          rotation      8               
+// Ring                 motor         5               
+// Grabber              digital_out   A               
+// Arm                  motor_group   9, 10           
+// Inertial             inertial      6               
+// Red                  motor         11              
+// Controller2          controller                    
 // ---- END VEXCODE CONFIGURED DEVICES ----
 
 // Includes the vex library
@@ -383,7 +384,7 @@ void autonomous(void) {
   B(16);
   wait(.4, sec);
 
-  // Start to Lower the
+  // Start to Lower the Lift
   RunLiftT(2.5, -1);
 
   // Turn Left 72 deg.
@@ -405,8 +406,8 @@ void autonomous(void) {
   // Turn Right 90 deg.
   R(90);
 
-  // Go Forwards 33.5 in.
-  F(33.5);
+  // Go Forwards 31 in.
+  F(31);
 
   // Let go of the Numatic Claw
   RunGoal(0);
@@ -415,8 +416,8 @@ void autonomous(void) {
   // Go Backwards 6 in.
   B(6);
 
-  // Turn Right 87 deg.
-  R(87);
+  // Turn Right 88 deg.
+  R(88);
 
   // Go Forwards 54 in.
   F(54);
@@ -445,24 +446,12 @@ void autonomous(void) {
   RunGoal(1);
 
   // Arc Turn
-  Drive(-5, -32);
+  Drive(-5, -34.5);
   wait(2, sec);
 
   // Go Backwards 80 in.
   B(80);
   wait(2.8, sec);
-
-  // Run Motor Claw
-  RunRed(1);
-
-  // Turn Left 55 deg.
-  L(55);
-
-  // Go Backwards 40 in.
-  B(40);
-
-  // Turn Left 40 deg.
-  L(40);
 
   // Manually Run Motor Claw
   Red.spin(forward);
@@ -471,27 +460,37 @@ void autonomous(void) {
   Red.setBrake(hold);
   wait(.5, sec);
 
-  // Go Backwards 35 in.
-  B(35);
+  // Turn Left 80 deg.
+  L(80);
 
-  // Turn Left 48 deg.
-  L(48);
+  // Go Backwards 40 in.
+  B(40);
+  wait(2,sec);
+
+  // Turn Left 40 deg.
+  Drive(8,21);
+
+  // Manually Run Motor Claw
+  Red.spin(reverse);
+  wait(2, sec);
+  Red.stop();
+  Red.setBrake(hold);
+  wait(.5, sec);
 
   // Start to Raise the Lift
   RunLiftT(2.5, 1);
-  wait(1, sec);
+  wait(2, sec);
 
   // Go Forwards 16 in.
   F(16);
 
   // Start to Lower the Lift
-  RunLiftT(2.5, -1);
-
+  RunLiftT(2.5,-1);
+  wait(1,sec);
   
-
-  // Go Forwards 16 in.
-  F(16);
-
+  // Go Forwards 55 in.
+  F(55);
+  
   // Disable PID
   enableDrivePID = false;
 
@@ -522,7 +521,15 @@ int Driver() {
                Controller1.ButtonLeft.pressing() == 1) {
       Left.stop(coast);
       Right.stop(coast);
-    } else {
+    }     if (Controller2.ButtonDown.pressing() == 1 &&
+        Controller2.ButtonRight.pressing() == 1) {
+      Left.stop(hold);
+      Right.stop(hold);
+    } else if (Controller2.ButtonDown.pressing() == 1 &&
+               Controller2.ButtonLeft.pressing() == 1) {
+      Left.stop(coast);
+      Right.stop(coast);
+    }else {
       Left.spin(directionType::fwd,
                 (Controller1.Axis3.value() + Controller1.Axis1.value() / 2),
                 velocityUnits::pct);
@@ -562,7 +569,7 @@ int ArmButtons() {
   }
 }
 
-// Ring Control Thread
+// Grabber Control Thread
 int GrabberButtons() {
   while (true) {
     if (Controller1.ButtonX.pressing() == 1) {
@@ -578,9 +585,14 @@ int GrabberButtons() {
 int RedButtons() {
   while (true) {
     if (Controller1.ButtonY.pressing() == 1) {
-      Red.spin(forward, 75, pct);
+      Red.spin(forward, 100, pct);
     } else if (Controller1.ButtonB.pressing() == 1) {
-      Red.spin(reverse, 75, pct);
+      Red.spin(reverse, 100, pct);
+    } 
+    else if (Controller2.ButtonR1.pressing() == 1) {
+      Red.spin(forward, 20, pct);
+    } else if (Controller2.ButtonR2.pressing() == 1) {
+      Red.spin(reverse, 20, pct);
     } else {
       Red.stop(hold);
     }
