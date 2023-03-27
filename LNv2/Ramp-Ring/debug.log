@@ -1,0 +1,21 @@
+[1016/182450.413:ERROR:icu_util.cc(133)] Invalid file descriptor to ICU data received.
+[1016/182450.415:FATAL:content_main_delegate.cc(53)] Check failed: false. 
+Backtrace:
+	v8::internal::Bitmap::CellsCount [0x699FB910+54096]
+	v8::PropertyDescriptor::value [0x699D5C7D+177853]
+	v8::internal::interpreter::Register::operator== [0x6999C640+136736]
+	std::basic_ostream<char,std::char_traits<char> >::_Osfx [0x683A32FF+1695]
+	v8::internal::ParserBase<v8::internal::Parser>::allow_eval_cache [0x698BE26B+109787]
+	v8::internal::ParserBase<v8::internal::Parser>::allow_eval_cache [0x698BDE14+108676]
+	v8::internal::ParserBase<v8::internal::Parser>::allow_eval_cache [0x698BD235+105637]
+	v8::internal::ParserBase<v8::internal::Parser>::allow_eval_cache [0x698D1F56+190918]
+	v8::internal::ParserBase<v8::internal::Parser>::allow_eval_cache [0x698BDA87+107767]
+	ChromeMain [0x683A1183+263]
+	(No symbol) [0x00E02B18]
+	(No symbol) [0x00E013E6]
+	IsSandboxedProcess [0x00ED48B8+333592]
+	BaseThreadInitThunk [0x75C1FA29+25]
+	RtlGetAppContainerNamedObjectPath [0x77BD7A9E+286]
+	RtlGetAppContainerNamedObjectPath [0x77BD7A6E+238]
+
+[1016/182450.635:ERROR:http_transport_win.cc(175)] WinHttpCrackUrl: The URL does not use a recognized protocol (0x2ee6)
